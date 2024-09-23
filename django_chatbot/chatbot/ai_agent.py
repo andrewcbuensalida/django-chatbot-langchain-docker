@@ -1,6 +1,3 @@
-from langsmith import traceable  # Automatically looks at .env from os.environ to connect to langsmith
-from langsmith.wrappers import wrap_openai
-from langchain_core.retrievers import BaseRetriever
 from langchain_community.tools.tavily_search import TavilySearchResults
 from langchain_pinecone import PineconeVectorStore
 from langchain_openai import OpenAIEmbeddings
@@ -10,8 +7,6 @@ from langchain_openai import ChatOpenAI
 from langchain import hub
 from langchain.agents import create_tool_calling_agent
 from langchain.agents import AgentExecutor
-
-
 
 # Turn vector retriever into a tool
 index_name = "cancer-wiki"
@@ -35,7 +30,7 @@ tools = [tavily_search, retriever_tool]
 # Define the LLM
 llm = ChatOpenAI(model="gpt-4", temperature=0,api_key=settings.OPENAI_API_KEY)
 
-# Define the prompt
+# Define the prompt. Can also to a custom prompt
 prompt = hub.pull("hwchase17/openai-functions-agent") # Prompt to guide agent
 
 # Initialize agent

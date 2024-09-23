@@ -12,11 +12,10 @@ def chatbot(request):
 
     if request.method == 'POST':
         message = request.POST.get('message')
-        response = agent_executor.invoke({"input": message + '. Answer in less than 10 words.'})
-        print('''*********Example response["output"]:\n''', response['output'])
+        response = agent_executor.invoke({"input": message + '. Answer in less than 10 words.'}) # could probably add chats to the input so LLM can have memory of previous conversations
 
         chat = Chat(user=request.user, message=message, response=response['output'], created_at=timezone.now())
-        # chat.save()
+        chat.save()
         return JsonResponse({'message': message, 'response': response['output']})
     return render(request, 'chatbot.html', {'chats': chats})
 
