@@ -1,30 +1,10 @@
 from django.shortcuts import render, redirect
-from django.conf import settings
 from django.http import JsonResponse
-from openai import OpenAI
-
 from django.contrib import auth
 from django.contrib.auth.models import User
 from .models import Chat
-
 from django.utils import timezone
-
-client = OpenAI(
-    # This is the default and can be omitted
-    api_key=settings.OPENAI_API_KEY
-)
-
-def ask_openai(message):
-    response = client.chat.completions.create(
-        model = "gpt-4",
-        messages=[
-            {"role": "system", "content": "You are an helpful assistant."},
-            {"role": "user", "content": message},
-        ]
-    )
-    
-    answer = response.choices[0].message.content.strip()
-    return answer
+from .ai_agent import agent_executor
 
 # Create your views here.
 def chatbot(request):
@@ -32,11 +12,12 @@ def chatbot(request):
 
     if request.method == 'POST':
         message = request.POST.get('message')
-        response = ask_openai(message)
+        response = agent_executor.invoke({"input": message + '. Answer in less than 10 words.'})
+        print('''*********Example response["output"]:\n''', response['output'])
 
-        chat = Chat(user=request.user, message=message, response=response, created_at=timezone.now())
-        chat.save()
-        return JsonResponse({'message': message, 'response': response})
+        chat = Chat(user=request.user, message=message, response=response['output'], created_at=timezone.now())
+        # chat.save()
+        return JsonResponse({'message': message, 'response': response['output']})
     return render(request, 'chatbot.html', {'chats': chats})
 
 

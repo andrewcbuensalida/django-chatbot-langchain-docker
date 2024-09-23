@@ -33,6 +33,3 @@ could delete the .venv folder then regenerate it. or modiy the pyvenv.cfg in the
 
 ## to run server, 
 `python manage.py runserver` # this is for development only they say
-
-./django_chatbot/chatbot is for ???
-./django_chatbot/django_chatbot is for ???
