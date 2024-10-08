@@ -63,7 +63,7 @@
   </style>
 {% endblock %}
 
-
+<!-- anything in block content will be injected in the block content in the base.html -->
 {% block content %}
 <div class="chat-container">
   <div class="card flex-grow-1">
@@ -76,18 +76,7 @@
     <div class="card-body messages-box">
       
       <ul class="list-unstyled messages-list">
-        
-        <!-- <li class="message received">
-          <div class="message-text">
-            <div class="message-sender">
-              <b>AI Chatbot</b>
-            </div>
-            <div class="message-content">
-              Hi {{user.username}}, I am your AI Chatbot, you can ask me anything.
-            </div>
-          </div>
-        </li> -->
-
+      
         {% for chat in chats %}
           {% if chat.user == request.user %}
 
@@ -124,6 +113,7 @@
     <br><br>
   </div>
   <form class="message-form">
+    <!-- csrf_token makes sure it's not an attack -->
     {%csrf_token%}
     <div class="input-group">
       <input type="text" class="form-control message-input" placeholder="Type your message...">
@@ -140,7 +130,7 @@
   const messageInput = document.querySelector('.message-input');
 
   messageForm.addEventListener('submit', (event) => {
-    event.preventDefault();
+    event.preventDefault(); // so page doesn't reload
 
     const message = messageInput.value.trim();
     if (message.length === 0) {
@@ -149,6 +139,7 @@
 
     const messageItem = document.createElement('li');
     messageItem.classList.add('message', 'sent');
+    // TODO might be an injection attack. Better to use innerText
     messageItem.innerHTML = `
         <div class="message-text">
             <div class="message-sender">
@@ -162,16 +153,19 @@
 
     messageInput.value = '';
 
+    // This sends form data to same url (which django will receive) but as a POST request
     fetch('', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams({
+        // {%csrf_token%}
         'csrfmiddlewaretoken': document.querySelector('[name=csrfmiddlewaretoken]').value,
         'message': message
       })
     })
       .then(response => response.json())
       .then(data => {
+        // TODO this could be streamed instead of all at once. Maybe with websockets?
         const response = data.response;
         const messageItem = document.createElement('li');
         messageItem.classList.add('message', 'received');

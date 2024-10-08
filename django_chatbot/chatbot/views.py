@@ -45,6 +45,7 @@ def register(request):
             try:
                 user = User.objects.create_user(username, email, password1)
                 user.save()
+                # in settings.py, we have 'django.contrib.auth.middleware.AuthenticationMiddleware' which is why we can use auth.login
                 auth.login(request, user)
                 return redirect('chatbot')
             except:

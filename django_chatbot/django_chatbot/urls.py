@@ -18,5 +18,5 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('chatbot.urls'))
+    path('', include('chatbot.urls')) # this tells Django to include the urls.py file from the chatbot folder
 ]
