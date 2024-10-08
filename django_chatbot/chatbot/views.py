@@ -109,7 +109,7 @@ def employee(request):
                 session, "https://jsonplaceholder.typicode.com/users"
             )
 
-            albums, users = await asyncio.gather(albums_task, users_task)
+            albums, users = await asyncio.gather(albums_task, users_task) # instead of gather, can use asyncio.create_task and it'll run both fetches at the same time
 
             for user in users:
                 user["albums"] = [
