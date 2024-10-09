@@ -78,7 +78,7 @@ def logout(request):
     auth.logout(request)
     return redirect("login")
 
-# # synchronous version takes around 10 seconds
+# get employees and albums then map. synchronous version takes around 10 seconds
 # def employee(request):
 #     def fetch_json(url):
 #         response = requests.get(url)
@@ -93,7 +93,7 @@ def logout(request):
 
 #     return JsonResponse({"users": users})
 
-# async version takes around 5 seconds
+# get employees and albums then map. async version takes around 5 seconds
 def employee(request):
     async def fetch_json(session, url):
         async with session.get(url) as response:
@@ -120,4 +120,3 @@ def employee(request):
 
     users = asyncio.run(fetch_and_gather())
     return JsonResponse({"users": users})
-
