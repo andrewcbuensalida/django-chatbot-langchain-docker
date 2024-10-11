@@ -14,7 +14,7 @@ To run a container based on the image. This will also create the docker network.
 To tear down
 `docker-compose down`
 
-In production, to start container
+In production, to start container. (have to have migrations folder in local first)
 `docker-compose -f docker-compose.prod.yml up`
 
 ## Create a virtual environment
@@ -50,13 +50,13 @@ could delete the .venv folder then regenerate it. or modiy the pyvenv.cfg in the
 
 ## if for some reason you don't want to use docker, to run server, 
 `python manage.py runserver` # this is for development only they say
-This will create a db.sqlite3
 
 ##
-When changing the db model, makemigrations creates migrations folder in the chatbot folder, and an empty db.sqlite3 file in the current folder
+When changing the chatbot.models, makemigrations creates migrations folder in the chatbot folder (basically the instructions on how to setup the database), and an empty db.sqlite3 file in the current folder
 `python manage.py makemigrations chatbot`
 then this to apply the schema to the db.sqlite3 file
 `python manage.py migrate`
+Have to do it in this order
 
 ##
 To check environment variables in container

@@ -9,8 +9,8 @@ env/
 .venv/
 .env/
 
-# Ignore Django migrations
-*/migrations/*
+# # Ignore Django migrations (maybe migrations are needed when building the image)
+# */migrations/*
 
 # Ignore local environment variables file
 .env
