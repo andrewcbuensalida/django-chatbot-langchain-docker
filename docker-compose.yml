@@ -1,0 +1,23 @@
+version: "3.8"
+
+# This automatically creates a network for the services to communicate with each other
+services:
+  django-chatbot-langchain-docker:
+    build: 
+      context: ./django_chatbot/
+      dockerfile: Dockerfile
+    command: python manage.py runserver 0.0.0.0:8000 # This is the command that runs when the container is started
+    volumes:
+      - ./django_chatbot/:/app/ # This mounts the local directory to the container directory, so when there's a change in django_chatbot, it will reflect in the container live real-time
+    ports:
+      - 8000:8000
+    env_file:
+      - ./.env
+    # environment:
+    #   - OPENAI_API_KEY=${OPENAI_API_KEY} # This comes from local .env file during build time and sets it in the container
+    #   - PINECONE_API_KEY=${PINECONE_API_KEY} 
+    #   - LANGCHAIN_API_KEY=${LANGCHAIN_API_KEY}
+    #   - LANGCHAIN_TRACING_V2=${LANGCHAIN_TRACING_V2}
+    #   - LANGCHAIN_PROJECT=${LANGCHAIN_PROJECT}
+    #   - TAVILY_API_KEY=${TAVILY_API_KEY}
+    #   - HUGGING_FACE_TOKEN=${HUGGING_FACE_TOKEN}

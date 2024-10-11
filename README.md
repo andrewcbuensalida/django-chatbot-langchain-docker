@@ -2,6 +2,18 @@ https://www.youtube.com/watch?v=qrZGfBBlXpk&t=92s
 
 https://lucid.app/lucidchart/bb4776ae-9dee-4122-82a7-92abfa851095/edit?viewport_loc=-3681%2C-948%2C5978%2C2611%2C0_0&invitationId=inv_13525c03-b906-4d7a-a190-55466b61ec2d
 
+## To dockerize, 
+https://testdriven.io/blog/dockerizing-django-with-postgres-gunicorn-and-nginx/
+
+To build image, make sure to comment pywin32==307 in the requirements.txt
+`docker-compose build --no-cache`
+
+To run a container based on the image. This will also create the docker network. This will bind the local django_chatbot folder so it syncs changes to the app folder in the container.
+`docker-compose up`
+
+To tear down
+`docker-compose down`
+
 ## Create a virtual environment
 
 ```bash
@@ -33,5 +45,25 @@ In the future, to deactivate venv
 ## if upgrade python version
 could delete the .venv folder then regenerate it. or modiy the pyvenv.cfg in the .venv folder.
 
-## to run server, 
+## if for some reason you don't want to use docker, to run server, 
 `python manage.py runserver` # this is for development only they say
+This will create a db.sqlite3
+
+##
+When changing the db model, run migrations
+`python manage.py makemigrations`
+this generates something like 0001_initial.py, in the migrations,
+then
+`python manage.py migrate`
+
+##
+To check environment variables in container
+`printenv VARIABLE_NAME`
+
+## Check sqlite in container
+`apt-get update`
+`apt-get install sqlite3`
+`sqlite3`
+`.tables`
+`SELECT * FROM chatbot_chat;`
+`.exit 1`

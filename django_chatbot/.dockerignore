@@ -1,0 +1,33 @@
+test.txt
+
+# Ignore Python bytecode files
+*.pyc
+*.pyo
+__pycache__
+
+# Ignore virtual environment directories
+venv/
+env/
+.venv/
+.env/
+
+# Ignore Django migrations
+*/migrations/*
+
+# Ignore local environment variables file
+.env
+
+# Ignore database files
+*.sqlite3
+
+# Ignore media files
+media/
+
+# Ignore static files
+staticfiles/
+
+# Ignore any other files or directories that are not needed in the Docker image
+node_modules/
+*.log
+*.bak
+*.swp

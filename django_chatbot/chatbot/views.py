@@ -63,8 +63,14 @@ def register(request):
                 # in settings.py, we have 'django.contrib.auth.middleware.AuthenticationMiddleware' which is why we can use auth.login
                 auth.login(request, user)
                 return redirect("chatbot")
-            except:
-                error_message = "Error creating account"
+            except Exception as e:
+                if (
+                    e.__cause__.args[0]
+                    == "UNIQUE constraint failed: auth_user.username"
+                ):
+                    error_message = "Username already exists"
+                else:
+                    error_message = "Error creating account"
                 return render(
                     request, "register.html", {"error_message": error_message}
                 )
@@ -100,7 +106,7 @@ def logout(request):
 #     return JsonResponse({"users": users})
 
 
-# # get employees and albums then map. async version takes around 5 seconds. 
+# # get employees and albums then map. async version takes around 5 seconds.
 # def employee(request):
 #     async def fetch_json(session, url):
 #         async with session.get(url) as response:
@@ -146,7 +152,7 @@ def employee(request):
     ):  # putting async returns a coroutine object, which is basically like a promise in JS
         return await asyncio.to_thread(
             fetch_json, url
-        )  # alternatively could use loop.run_in_executor(None, fetch_json, url) for more fine-grained control
+        )  # alternatively could use loop.run_in_executor(None, fetch_json, url) for more fine-grained control. NOT concurrent.futures ThreadPoolExecutor, because this is more for running things at the same time, not waiting around for network requests.
 
     async def fetch_and_gather():
         albums, users = await asyncio.gather(
