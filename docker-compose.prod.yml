@@ -5,7 +5,7 @@ services:
   django-chatbot-langchain-docker:
     build: 
       context: ./django_chatbot/
-      dockerfile: Dockerfile.prod
+      dockerfile: Dockerfile
     command: gunicorn django_chatbot.wsgi:application --bind 0.0.0.0:8000 # This is the command that runs when the container is started
     ports:
       - 8000:8000

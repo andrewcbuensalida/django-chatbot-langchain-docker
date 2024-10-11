@@ -12,6 +12,7 @@ then
 fi
 
 python manage.py flush --no-input
+python manage.py makemigrations chatbot
 python manage.py migrate
 
 # this executes the command passed from docker-compose.yml

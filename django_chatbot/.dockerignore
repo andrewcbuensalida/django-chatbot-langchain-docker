@@ -1,5 +1,3 @@
-test.txt
-
 # Ignore Python bytecode files
 *.pyc
 *.pyo

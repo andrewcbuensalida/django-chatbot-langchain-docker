@@ -12,13 +12,13 @@ ENV PYTHONUNBUFFERED 1
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Copy the project files
+COPY . .
+
 # copy entrypoint.sh
 COPY entrypoint.sh .
 RUN sed -i 's/\r$//g' entrypoint.sh
 RUN chmod +x entrypoint.sh
-
-# Copy the project files
-COPY . .
 
 # run entrypoint.sh
 ENTRYPOINT ["/app/entrypoint.sh"]
