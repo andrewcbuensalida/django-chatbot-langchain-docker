@@ -8,7 +8,7 @@ WORKDIR /app
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-# Install dependencies
+# Install dependencies. RUN is for build time
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
@@ -20,5 +20,12 @@ COPY entrypoint.prod.sh .
 RUN sed -i 's/\r$//g' entrypoint.prod.sh
 RUN chmod +x entrypoint.prod.sh
 
-# run entrypoint.sh
+# important for ECS
+EXPOSE 8000
+
+# Dockerfile should specify at least one of CMD or ENTRYPOINT commands. ENTRYPOINT sets the process to run, while CMD supplies default arguments to that process.
+
+# The CMD instruction sets the command to be executed when running a container from an image. There can only be 1 CMD. The purpose of a CMD is to provide defaults for an executing container. If you would like your container to run the same executable every time, then you should consider using ENTRYPOINT in combination with CMD. CMD should be used as a way of defining default arguments for an ENTRYPOINT command or for executing an ad-hoc command in a container. CMD will be overridden when running the container with alternative arguments. 
+
+# run entrypoint.sh. An ENTRYPOINT allows you to configure a container that will run as an executable. When an image is created without an ENTRYPOINT, Docker defaults to using /bin/sh -c
 ENTRYPOINT ["/app/entrypoint.prod.sh"]

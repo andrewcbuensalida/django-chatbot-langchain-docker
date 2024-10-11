@@ -36,7 +36,8 @@ SECRET_KEY = 'django-insecure-wsa9k4v_goql%t8rn@q4*5flo+xnnxa%8!^p2g(4g-=py==ur)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# without *, it doesn't login. TODO try nginx
+ALLOWED_HOSTS = ["*"]  
 
 
 # Application definition

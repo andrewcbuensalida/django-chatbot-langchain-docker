@@ -2,7 +2,8 @@ version: "3.8"
 
 # This automatically creates a network for the services to communicate with each other
 services:
-  django-chatbot-langchain-docker:
+  web:
+    image: django-chatbot # This is the image name that is built from the Dockerfile.prod. If it can't find it in dockerhub, it will build it from the Dockerfile.prod
     build: 
       context: ./django_chatbot/
       dockerfile: Dockerfile.prod
