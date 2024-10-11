@@ -12,6 +12,7 @@ services:
       - ./django_chatbot/:/app/ # This mounts the local directory to the container directory, so when there's a change in django_chatbot, it will reflect in the container live real-time
     ports:
       - 8000:8000
+    # this sets the environment variables in the container
     env_file:
       - ./.env
     # environment:

@@ -1,5 +1,7 @@
 https://www.youtube.com/watch?v=qrZGfBBlXpk&t=92s
 
+Fargate Django is not the easiest combos. Maybe AWS Lambda Django or vanilla python is better.
+
 https://lucid.app/lucidchart/bb4776ae-9dee-4122-82a7-92abfa851095/edit?viewport_loc=-3681%2C-948%2C5978%2C2611%2C0_0&invitationId=inv_13525c03-b906-4d7a-a190-55466b61ec2d
 
 ## Create a virtual environment
@@ -104,4 +106,7 @@ AWS Fargate is a new compute engine for Amazon ECS that runs containers without 
 It might error saying could not pull from ecr because could not locate secret or auth. Task stopped at: 2023-11-21T20:09:21.565Z ResourceInitializationError: unable to pull secrets or registry auth: execution resource retrieval failed: unable to retrieve ecr registry auth: service call has been retried 3 time(s): RequestError: send request failed caused by: Post "https://api.ecr.us-west-1.amazonaws.com/": dial tcp 13.52.118.188:443: i/o timeout. Please check your task network configuration.
 Try to make ecr repo public. (this is not needed. It can be a private ecr) The real cause of this error was because I had a faulty internet gateway in the public subnets.
 
-1. Create an Application Load Balancer
+TODO Health checks in load balancer are failing. Maybe have to do nginx. 
+TODO Need to use a persistent database. db.sqlite3 gets erased every time fargate spins up a new container. Seems to randomly spin up and down containers every 5 minutes.
+TODO when creating a task in ECS, get environment variables from .env file in s3 instead of individually inputting it.
+TODO unit tests
