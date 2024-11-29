@@ -85,59 +85,59 @@ def logout(request):
     return redirect("login")
 
 
-# # get employees and albums then map. synchronous version takes around 10 seconds
-# def employee(request):
-#     def fetch_json(url):
-#         response = requests.get(url)
-#         time.sleep(5) # simulate slow network
-#         return response.json()
+# get employees and albums then map. synchronous version takes around 10 seconds
+def employee_sync(request):
+    def fetch_json(url):
+        response = requests.get(url)
+        time.sleep(5) # simulate slow network
+        return response.json()
 
-# start_time = time.perf_counter()
-#     albums = fetch_json("https://jsonplaceholder.typicode.com/albums")
-#     users = fetch_json("https://jsonplaceholder.typicode.com/users")
+    start_time = time.perf_counter()
+    albums = fetch_json("https://jsonplaceholder.typicode.com/albums")
+    users = fetch_json("https://jsonplaceholder.typicode.com/users")
 
-#     for user in users:
-#         user["albums"] = [album for album in albums if album["userId"] == user["id"]]
+    for user in users:
+        user["albums"] = [album for album in albums if album["userId"] == user["id"]]
 
-# end_time = time.perf_counter()
-# print(f"Time taken: {end_time - start_time} seconds")
-
-
-#     return JsonResponse({"users": users})
+    end_time = time.perf_counter()
+    print(f"Time taken: {end_time - start_time} seconds")
 
 
-# # get employees and albums then map. async version takes around 5 seconds.
-# def employee(request):
-#     async def fetch_json(session, url):
-#         async with session.get(url) as response:
-#             await asyncio.sleep(5)  # simulate slow network
-#             return await response.json()
+    return JsonResponse({"users": users})
 
-#     async def fetch_and_gather():
-#         async with aiohttp.ClientSession() as session:
-#             albums_task = fetch_json(
-#                 session, "https://jsonplaceholder.typicode.com/albums"
-#             )
-#             users_task = fetch_json(
-#                 session, "https://jsonplaceholder.typicode.com/users"
-#             )
 
-#             albums, users = await asyncio.gather(
-#                 albums_task, users_task
-#             )  # instead of gather, can use asyncio.create_task and it'll run both fetches at the same time. OR with TaskGroup which has different error handling. OR asyncio.to_thread to turn a blocking requests.get into a non-blocking one.
+# get employees and albums then map. async version takes around 5 seconds.
+def employee_async(request):
+    async def fetch_json(session, url):
+        async with session.get(url) as response:
+            await asyncio.sleep(5)  # simulate slow network
+            return await response.json()
 
-#             for user in users:
-#                 user["albums"] = [
-#                     album for album in albums if album["userId"] == user["id"]
-#                 ]
+    async def fetch_and_gather():
+        async with aiohttp.ClientSession() as session:
+            albums_task = fetch_json(
+                session, "https://jsonplaceholder.typicode.com/albums"
+            )
+            users_task = fetch_json(
+                session, "https://jsonplaceholder.typicode.com/users"
+            )
 
-#             return users
+            albums, users = await asyncio.gather(
+                albums_task, users_task
+            )  # instead of gather, can use asyncio.create_task and it'll run both fetches at the same time. OR with TaskGroup which has different error handling. OR asyncio.to_thread to turn a blocking requests.get into a non-blocking one.
 
-#     start_time = time.perf_counter()
-#     users = asyncio.run(fetch_and_gather())
-#     end_time = time.perf_counter()
-#     print(f"Time taken: {end_time - start_time} seconds")
-#     return JsonResponse({"users": users})
+            for user in users:
+                user["albums"] = [
+                    album for album in albums if album["userId"] == user["id"]
+                ]
+
+            return users
+
+    start_time = time.perf_counter()
+    users = asyncio.run(fetch_and_gather())
+    end_time = time.perf_counter()
+    print(f"Time taken: {end_time - start_time} seconds")
+    return JsonResponse({"users": users})
 
 
 # get employees and albums then map. Like method above except we use asyncio.to_thread to turn a blocking requests.get into a non-blocking one.
